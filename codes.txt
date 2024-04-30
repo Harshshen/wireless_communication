@@ -1,0 +1,375 @@
+%guassian pdf cdf
+% clc;
+% close all;
+% clear all;
+% 
+% mu=0;
+% sigma = 1.5;
+% x = linspace(-5,5,1000);
+% pdf_values = (1/(sigma*sqrt(2*pi))) * exp(-(x-mu).^2 / (2*sigma^2));
+% cdf_values = 0.5* (1+erf((x-mu)/(sigma * sqrt(2))));
+% 
+% figure;
+% subplot(2,1,1)
+% plot(x,pdf_values,'b','LineWidth',2);
+% title('probability density function');
+% xlabel('random variables(x)');
+% ylabel('pdf f(x)');
+% grid on;
+% 
+% subplot(2,1,2)
+% plot(x,cdf_values,'b','LineWidth',2);
+% title('cummulative density function');
+% xlabel('random variables');
+% ylabel('pdf f(x)')
+
+%normal pdf cdf
+% clear all; clc; close all;
+% 
+% a=-1; b=1; x=linspace(a,b,1000);
+% 
+% pdf_values = (1/(b-a)) * ones(size(x)); cdf_values = (x-a) / (b-a);
+% cdf_values(cdf_values <0) = 0; cdf_values(cdf_values >1)=1;
+% 
+% 
+% figure subplot(2,1,1); plot(x,pdf_values,'b','LineWidth',2); title('pdf
+% of normal distribution'); ylabel('pdf f(x)'); xlabel('random variable
+% x');
+% 
+% subplot(2,1,2); plot(x,cdf_values,'b','LineWidth',2); title('cdf
+% sitribution of nomral'); ylabel('cdf f(x)'); xlabel('random variable x');
+
+%rayleigh distribution 
+% clc;
+% clear all;
+% close all;
+% 
+% sigma = 1.5;
+% x=linspace(0,5,1000);
+% 
+% pdf_values = (x/sigma^2).* exp(-(x.^2)/2*sigma^2);
+% cdf_values = 1 - exp(-(x.^2)/(2*sigma^2));
+% 
+% figure
+% subplot(2,1,1)
+% plot(x,pdf_values,'b','Linewidth',2);
+% title('rayleigh distribution');
+% xlabel('random variables');
+% ylabel('pdf f(x)');
+% 
+% subplot(2,1,2)
+% plot(x,cdf_values,'b','Linewidth',2);
+% title('rayleigh distribution');
+% xlabel('cummulative variables');
+% ylabel('cdf f(x)');
+
+%awgn noise in matlab
+% fs = 1000;
+% T=1;
+% t = 0:1/fs:T-1/fs;
+% f_signal= 10;
+% a_signal=1;
+% 
+% snr_db =0;
+% signal = a_signal * sin(2*pi*f_signal*t);
+% 
+% noise_power = var(signal)/10^(snr_db/10);
+% noise = sqrt(noise_power) * randn(size(t));
+% 
+% figure
+% subplot(2,1,1);
+% plot(t,signal,'b','LineWidth', 2);
+% title('original signal');
+% xlabel('time');
+% ylabel('amplitude');
+% 
+% subplot(2,1,2);
+% plot(t,noise,'b','LineWidth', 2);
+% title('noise signal');
+% xlabel('time');
+% ylabel('amplitude');
+
+%two ray model of wireless communication 
+% clc;
+% clear all;
+% close all;
+% 
+% f = 900 * 10^6; 
+% d = 1:0.1:10^5;
+% 
+% ht = 50;
+% hr = 2; % Receiver height
+% Glos = 1; %
+% Gref = 1; %
+% pt = 1; % Power of transmitter
+% T = -1; % Reflection coefficient
+% dlos = sqrt(d.^2 + (ht-hr)^2); % LOS distance
+% dref = sqrt(d.^2 + (ht+hr)^2); % Reflection distance
+% lambda = (3 * 10^8)/f; % Wavelength for 900 MHz
+% lambda1 = (3 * 10^8)/(2*f); % Wavelength for 1800 MHz
+% phi = (2*pi*(dref - dlos)/lambda); % Phase difference for 900 MHz
+% phi1 = (2*pi*(dref - dlos)/lambda1); % Phase difference for 1800 MHz
+% 
+% % Received power not in dB
+% pr = pt * ((lambda/ (4 * pi))^2) * ((sqrt(Glos) ./ dlos) + ((T * sqrt(Gref) * exp(sqrt(-1) * phi)) ./ dref)).^2;
+% pr1 = pt * ((lambda1/ (4 * pi))^2) * ((sqrt(Glos) ./ dlos) + ((T * sqrt(Gref) * exp(sqrt(-1) * phi1)) ./ dref)).^2;
+% 
+% prdb = 10 * log10(pr);
+% prdb1 = 10 * log10(pr1);
+% 
+% figure;
+% semilogx(d, prdb, 'LineWidth', 2);
+% hold on;
+% semilogx(d, prdb1, 'LineWidth', 2);
+% title("Received power in dB for 900MHz and 1800MHz");
+% ylabel("Received power (dB)");
+% xlabel("Distance (m)");
+% legend('900MHz', '1800MHz');
+% grid on;
+
+
+%knife edge diffraction model 
+% clear all;
+% close all;
+% clc;
+% %exact equation of gd
+% mue = -5:5;
+% % muealue of nu
+% inde =  0;
+% for muemuer = -5:5
+%     inde = inde +1;
+%     intFe = quad('exp((-j*pi*x.^2)/2)',muemuer,20); %Integration of the function
+%     fe = abs((0.5+0.5*j)*intFe); %Complex Fresnel Integral
+%     Gdb_e(inde) =  20*log10(fe);
+% end
+% 
+% %approximate equation of gd
+% for i=1:length(mue)  
+%     % approximate formulas  
+%     if mue(i) <= -1  
+%         GdB(i)=0;  
+%     elseif mue(i) <=  0  
+%         GdB(i)=20*log10(0.5-0.62*mue(i));  
+%     elseif mue(i) <=  1  
+%         GdB(i)=20*log10(0.5*exp(-0.95*mue(i)));  
+%     elseif mue(i) <=  2.4  
+%         GdB(i)=20*log10(0.4-sqrt(0.1184-(0.38-0.1*mue(i))^2));  
+%     else  
+%         GdB(i)=20*log10(0.225/mue(i));  
+%     end  
+% end
+% 
+% figure;
+% plot(mue,Gdb_e,mue,GdB,":",'linewidth',2);
+% 
+% % Using text instead of legend
+% legend('Exact value','Approximation Value');
+% gtext('Exact value', 'FontSize',  12, 'Color', 'r');
+% gtext( 'Approximate value', 'FontSize',  12, 'Color', 'b');
+% 
+% title('Knife Edge Diffraction');
+% xlabel('Fresnel Diffraction Parameter');
+% ylabel('Diffraction Loss (dB)');
+
+%power delay profile 
+% 
+% clear all;
+% close all;
+% clc;
+% L=4;
+% Delay=[0,1,3,5];
+% Gains=[-20,-10,0,-10];
+% Gains_linear=10.^(Gains./10);
+% Delay_spread=max(Delay)-min(Delay);
+% disp(Delay_spread);
+% Summ=sum(Delay.*Gains_linear);
+% gains_sum=sum(Gains_linear);
+% Mean_Delay=Summ/gains_sum;
+% disp(Mean_Delay);
+% square_root_gains=sqrt(gains_sum);
+% for i=1:5
+% new_array_delay=(Delay-Mean_Delay).^2;
+% end
+% square_num=sqrt(sum(new_array_delay.*Gains_linear));
+% RMS=square_num/square_root_gains;
+% disp(RMS);
+% figure;
+% stem(Delay,Gains)
+% xlabel("Delay in us");
+% ylabel("Gains in dB");
+% title("PDP Plot");
+
+%doppler effect 
+% clear all;
+% close all;
+% clc;
+%  
+% fi1 = 2.4*10^9;
+% fi2 = 2*10^9;
+% fi3 = 3*10^9;
+%  
+% vel1 = 30;
+% vel2 = 10;
+% vel3 = 20;
+%  
+% lam1 = (3*10^8)/fi1;
+% lam2 = (3*10^8)/fi2;
+% lam3 = (3*10^8)/fi3;
+%  
+% theta1 =  0:0.01:180;
+% theta2 =  0:0.01:180;
+% theta3 =  0:0.01:180;
+%  
+% 
+% 
+% ds1 = (vel1.*cosd(theta1))/lam1;
+% f1 = fi1 + ds1;
+% ds2 = (vel2.*cosd(theta2))/lam2;
+% f2 = fi2 + ds2;
+% ds3 = (vel1.*cosd(theta3))/lam3;
+% f3 = fi3 + ds3;
+%  
+% figure;
+% hold on;
+% plot(theta1, ds1, 'b', 'Linewidth', 2);
+% plot(theta2, ds2, 'm', 'Linewidth', 2);
+% plot(theta3, ds3, 'y', 'Linewidth', 2);
+% legend('f=2.4Ghz v=30m/s', 'f=2Ghz v=10m/s', 'f=3Ghz v=20m/s');
+
+
+%Ldplm lnsplm
+% clear all;
+% clc;
+% close all;
+%  
+% % Parameters
+% d_min = input('Enter the minimum distance between transmitter and receiver (meters): ');
+% d_max = input('Enter the maximum distance between transmitter and receiver (meters): ');
+% num_points = input('Enter the number of points for distance array: ');
+% d = linspace(d_min, d_max, num_points);
+% fc = input('Enter the carrier frequency (Hz): ');
+% Pt = input('Enter the transmitter power (dBm): ');
+% sigma_db = input('Enter the standard deviation of shadowing (dB): ');
+% c = 3e8; 
+%  
+% % Calculate free space path loss
+% lambda = c / fc;
+% L_fs = (lambda ./ (4 * pi * d)).^2;
+%  
+% % Calculate path loss using LDPLM
+% path_loss_ldplm = 10 * log10(L_fs) + Pt;
+%  
+% % Generate log-normal shadowing term
+% sigma = 10^(sigma_db / 10);
+% shadowing = sigma*randn();
+%  
+% % Calculate path loss using LNSPLM
+% path_loss_lnsplm = path_loss_ldplm + shadowing;
+%  
+% % Display results
+% disp(['LDPLM Path Loss: ' num2str(path_loss_ldplm)]);
+% disp(['LNSPLM Path Loss: ' num2str(path_loss_lnsplm)]);
+%  
+% % Plotting
+% ldplm = -path_loss_ldplm;
+% lnsplm = -path_loss_lnsplm;
+% figure;
+% subplot(2, 1, 1);
+% plot(d, ldplm);
+% xlabel('Distance (m)');
+% ylabel('Path Loss (dB)');
+% title('Log Distance Path Loss Model - Path Loss vs. Distance');
+% subplot(2, 1, 2);
+% plot(d, lnsplm);
+% xlabel('Distance (m)');
+% ylabel('Path Loss (dB)');
+% title('Log Normal Shadowing Path Loss Model - Path Loss vs. Distance');
+
+%analytical BER
+% close all;
+% clc;
+% clear all;
+%  
+% Signal to Noise Ratio (SNR) range in dB
+% SNRdB = -4:2:12;
+% SNR = 10.^(SNRdB/10);
+%  
+% BPSK modulation
+% M = 2;
+% constellation = [1 -1];
+%  
+% Theoretical BER for BPSK modulation over AWGN channel
+% BER_AWGN = 0.5 * erfc(sqrt(SNR));
+%  
+% Theoretical BER for BPSK modulation over Rayleigh fading channel
+% BER_Rayleigh = 0.5 * (1 - sqrt(SNR./(SNR+1)));
+%  
+% Plotting the results
+% figure;
+% semilogy(SNRdB, BER_AWGN, 'b-', 'LineWidth', 2);
+% hold on;
+% semilogy(SNRdB, BER_Rayleigh, 'r-', 'LineWidth', 2);
+% grid on;
+% xlabel('SNR (dB)');
+% ylabel('Bit Error Rate (BER)');
+% title('Theoretical BER for BPSK Modulation');
+% legend('AWGN Channel', 'Rayleigh Channel');
+
+%Application of BER
+close all;
+clc;
+clear all;
+ 
+% Parameters
+SNR_dB = -4:2:12; % SNR in dB
+numBits = 10^6; % Number of bits
+M = 2; % BPSK modulation
+Eb_N0_dB = SNR_dB - 10*log10(log2(M)); % Convert SNR to Eb/N0
+ 
+% Generate random binary data
+data = randi([0 1], 1, numBits);
+ 
+% Modulation
+modulated_data = pskmod(data, M);
+ 
+% AWGN Channel Simulation
+for i = 1:length(Eb_N0_dB)
+    % Add AWGN
+    received_signal_awgn = awgn(modulated_data, Eb_N0_dB(i), 'measured');
+    
+    % Demodulation
+    demodulated_data_awgn = pskdemod(received_signal_awgn, M);
+    
+    % Calculate Bit Errors
+    bit_errors_awgn(i) = sum(demodulated_data_awgn ~= data);
+end
+ 
+% Calculate Bit Error Rate (BER) for AWGN
+BER_awgn = bit_errors_awgn / numBits;
+ 
+% Rayleigh Fading Channel Simulation
+for i = 1:length(Eb_N0_dB)
+    % Generate Rayleigh Fading Channel
+    fading_channel = sqrt(0.5)*(randn(1, numBits) + 1i*randn(1, numBits));
+    
+    % Add Noise to Rayleigh Channel
+    received_signal_rayleigh = modulated_data.*fading_channel + awgn(modulated_data, Eb_N0_dB(i), 'measured');
+    
+    % Demodulation
+    demodulated_data_rayleigh = pskdemod(received_signal_rayleigh./fading_channel, M);
+    
+    % Calculate Bit Errors
+    bit_errors_rayleigh(i) = sum(demodulated_data_rayleigh ~= data);
+end
+ 
+% Calculate Bit Error Rate (BER) for Rayleigh Fading Channel
+BER_rayleigh = bit_errors_rayleigh / numBits;
+ 
+semilogy(SNR_dB, BER_awgn, 'b-o');
+hold on;
+semilogy(SNR_dB, BER_rayleigh, 'r-o');
+grid on;
+xlabel('SNR (dB)');
+ylabel('Bit Error Rate (BER)');
+legend('AWGN Channel', 'Rayleigh Fading Channel');
+title('Bit Error Rate (BER) vs SNR for BPSK modulation');
